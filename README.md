@@ -1,2 +1,17 @@
 # DoYouKnowRythm
 A personal algorithm study backup repository
+
+## Why public?
+Just hope my answers of quetions be helpful to others who suffering from problem solving. That's all.
+
+## What language
+I used Python, but because of the Python's running speed limitation, now I'm using C++.\
+So I'll use Python only for some string problems.
+
+## Comment style
+Initially committed files might not have comments.\
+I'll leave a comment for variables or methods, from now.
+
+## Links you must check 👍
+- [Barking Dog's Algorithm Lecture](https://blog.encrypted.gg/category/%EA%B0%95%EC%A2%8C/%EC%8B%A4%EC%A0%84%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98?page=2)
+- [Fenwick Tree](https://yoongrammer.tistory.com/104)

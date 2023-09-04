@@ -12,6 +12,19 @@ So I'll use Python only for some string problems.
 Initially committed files might not have comments.\
 I'll leave a comment for variables or methods, from now.
 
+## Base Code
+### C++
+``` cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    // Use \n instead of endl
+}
+```
+
 ## Links you must check 👍
 - [Barking Dog's Algorithm Lecture](https://blog.encrypted.gg/category/%EA%B0%95%EC%A2%8C/%EC%8B%A4%EC%A0%84%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98?page=2)
 - [Fenwick Tree](https://yoongrammer.tistory.com/104)

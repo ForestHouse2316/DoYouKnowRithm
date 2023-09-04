@@ -14,6 +14,7 @@ I'll leave a comment for variables or methods, from now.
 
 ## Base Code
 ### C++
+#### Init
 ``` cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -22,6 +23,15 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     // Use \n instead of endl
+}
+```
+#### Plane Visulaizer
+``` cpp
+for (int y = 0; y < Y; y++) {
+    for (int x = 0; x < X; x++) {
+        cout << (board[y][x] ? "■" : "·") << " ";
+    }
+    cout << "\n";
 }
 ```
 

@@ -35,6 +35,14 @@ for (int y = 0; y < Y; y++) {
 }
 ```
 
-## Links you must check 👍
+## Learning
+### Basics
 - [Barking Dog's Algorithm Lecture](https://blog.encrypted.gg/category/%EA%B0%95%EC%A2%8C/%EC%8B%A4%EC%A0%84%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98?page=2)
+
+### Additional
+- [BJO Step Solving](https://www.acmicpc.net/step)
+- [BJO Problem Tags](https://www.acmicpc.net/problem/tags)
+
+### Just link...
 - [Fenwick Tree](https://yoongrammer.tistory.com/104)
+- [C++ Vector](https://blockdmask.tistory.com/70)

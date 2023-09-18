@@ -18,9 +18,9 @@ int main() {
             sum++;
         }
         else {
-            while (!s.empty() &&) {
-
-            }
+//            while (!s.empty() &&) {
+//
+//            }
         }
     }
 }

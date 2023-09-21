@@ -5,7 +5,7 @@ using namespace std;
 typedef pair<int, int> p;
 int N;
 stack<p> s;
-int sum = 0;
+long long sum = 0;
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -13,7 +13,6 @@ int main() {
     cin >> N;
 
     int in;
-    p temp;
     for (int n = 0; n < N; n++) {
         cin >> in;
 
@@ -26,7 +25,7 @@ int main() {
         else if (s.top().height == in) {
             if ((int) s.size() >= 2) {
                 // [BIG(s) , same , same input]
-                sum += s.top().num + 1;  // Current duplicate + Prev duplicate
+                sum += s.top().num + 1;  // Current duplicate + Prev BIG
             }
             else {
                 // [same , same input]
@@ -51,18 +50,14 @@ int main() {
             if (s.top().height == in) {
                 if ((int) s.size() >= 2) {
                     // [BIG(s) , same , same input]
-                    temp = s.top();
-                    s.pop();
-
-                    sum += temp.num + s.top().num;  // Current duplicate + Prev duplicate
-                    temp.num++;
-                    s.push(temp);  // Instead of emplace
+                    sum += s.top().num + 1;  // Current duplicate + Prev duplicate
                 }
                 else {
                     // [same , same input]
                     sum += s.top().num;
-                    s.top().num++;
                 }
+
+                s.top().num++;
             }
             else {
                 // [BIG(s) , single input]

@@ -19,6 +19,11 @@ I'll leave a comment for variables or methods, from now.
 #include <bits/stdc++.h>
 using namespace std;
 
+typedef long long ll;
+typedef pair<int, int> p;
+#define first first
+#define second second
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

@@ -1,23 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-typedef pair<int, int> p;
+typedef pair<ll, ll> p;
 #define from first
 #define height second
 ll N;
-ll H[100005];
+ll localStart;
+ll maxSize;
+ll in;
+ll firstHeight;
+ll localMinimum;
 stack<p> s;
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    do {
+
+    while (true) {
         cin >> N;
-        for (int n = 0; n < N; n++) {
-            cin >> H[n];
-            // 스택에 푸시하고.. 크기 늘어나는 부분에서 말임
-            // 그리고 후에 높이 줄어들면, 그 높이 줄어든거 감당 못하는 것들 최종 크기 결과 내서 pop
+        if (N == 0) break;
+
+        maxSize = 0;
+        localStart = 0;
+
+        // [0]
+        cin >> firstHeight;
+        localMinimum = firstHeight;  // Except 0 height
+        s.emplace(0, firstHeight);
+
+
+        // Start with [1]
+        // TODO 높이 0 나오면 아예 새로 루틴 돌리는 꼼수도 생각해봐도 될듯
+        for (ll n = 1; n < N; n++) {
+            cin >> in;
+
+            if (in == 0) {
+                localStart = n+1;
+                continue;
+            }
+
+            if (s.top().height < in) {
+                // BIG input
+                s.emplace(n, in);
+            }
+            else if (s.top().height > in) {
+                // SMALL input
+                if (in < localMinimum) localMinimum = in;  // No need to check bigger height cases
+
+                while (s.top().height > in) {
+                    maxSize = max(maxSize, s.top().height * (n - s.top().from));
+                    s.pop();
+                }
+            }
+
+            // If same height, pass
         }
-    } while(N != 0);
+
+        ll localWidth = (N - s.top().from);  // TODO need to be LOCAL. Current : Global
+        while (s.size() > 1) {
+            maxSize = max(maxSize, s.top().height * localWidth);
+            s.pop();
+        }
+        maxSize = max(maxSize, localMinimum * (N - s.top().from));  // LocalMinimum * LocalWidth
+
+        cout << maxSize << "\n";
+    }
+
 }

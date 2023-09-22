@@ -5,12 +5,10 @@ typedef pair<ll, ll> p;
 #define from first
 #define height second
 ll N;
-ll localStart;
 ll maxSize;
 ll in;
-ll firstHeight;
-ll localMinimum;
-stack<p> s;
+p temp;
+stack<p> s;  // Stack will automatically keep ascending order about height
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -20,25 +18,16 @@ int main() {
     while (true) {
         cin >> N;
         if (N == 0) break;
-
         maxSize = 0;
-        localStart = 0;
 
         // [0]
-        cin >> firstHeight;
-        localMinimum = firstHeight;  // Except 0 height
-        s.emplace(0, firstHeight);
+        cin >> in;
+        s.emplace(0, in);
 
 
         // Start with [1]
-        // TODO 높이 0 나오면 아예 새로 루틴 돌리는 꼼수도 생각해봐도 될듯
         for (ll n = 1; n < N; n++) {
             cin >> in;
-
-            if (in == 0) {
-                localStart = n+1;
-                continue;
-            }
 
             if (s.top().height < in) {
                 // BIG input
@@ -46,23 +35,36 @@ int main() {
             }
             else if (s.top().height > in) {
                 // SMALL input
-                if (in < localMinimum) localMinimum = in;  // No need to check bigger height cases
-
-                while (s.top().height > in) {
-                    maxSize = max(maxSize, s.top().height * (n - s.top().from));
+                while (!s.empty() && s.top().height > in) {
+                    temp = s.top();
+                    maxSize = max(maxSize, temp.height * (n - temp.from));
                     s.pop();
+                }
+
+                if (s.empty()) {
+                    // Push {0 , in}
+                    s.emplace(0, in);
+                }
+                else if (in == 0) {
+                    // stack might be filled with 0
+                    while (!s.empty()) {
+                        s.pop();
+                    }
+                    s.emplace(n, 0);  // Set new base
+                }
+                else {
+                    // Cut the height of bar on the temp index and push it
+                    s.emplace(temp.from, in);
                 }
             }
 
             // If same height, pass
         }
 
-        ll localWidth = (N - s.top().from);  // TODO need to be LOCAL. Current : Global
-        while (s.size() > 1) {
-            maxSize = max(maxSize, s.top().height * localWidth);
+        while (!s.empty()) {
+            maxSize = max(maxSize, s.top().height * (N - s.top().from));
             s.pop();
         }
-        maxSize = max(maxSize, localMinimum * (N - s.top().from));  // LocalMinimum * LocalWidth
 
         cout << maxSize << "\n";
     }
@@ -79,8 +81,37 @@ int main() {
 3 2 1 1
 6 1 5 1 5 1 5
 7 2 1 4 5 1 3 3
+7 3 3 1 5 4 1 2
 4 1000 1000 1000 1000
 2 1000000000 1000000000
+5 0 0 0 0 1
+11 5 1 1 0 1 2 3 0 6 6 6
+10 0 0 0 0 0 0 0 0 0 0
+12 0 1 0 2 0 3 0 4 0 5 0 6
+10 3 3 1 5 4 1 2 0 1000000000 1000000000
+10 1 1 1 1 1 1 1 1 0 9
 0
+
+
+ ANSWER
+ 25
+ 50
+ 10
+ 2
+ 3
+ 3
+ 3
+ 6
+ 8
+ 8
+ 4000
+ 2000000000
+ 1
+ 18
+ 0
+ 6
+ 2000000000
+ 9
+
 
  */

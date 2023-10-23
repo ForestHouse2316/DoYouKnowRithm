@@ -30,6 +30,17 @@ int main() {
     // Use \n instead of endl
 }
 ```
+#### BFS  & 2D Diffusion Mask
+Rotation : CW
+``` cpp
+queue<p> q;
+int maskX[] = {0, 1, 0, -1};
+int maskY[] = {1, 0, -1, 0};
+// Diagonal
+int maskX[] = {0, 1, 1, 1, 0, -1, -1, -1};
+int maskY[] = {1, 1, 0, -1, -1, -1, 0, 1};
+```
+
 #### Plane Visulaizer
 ``` cpp
 for (int y = 0; y < Y; y++) {

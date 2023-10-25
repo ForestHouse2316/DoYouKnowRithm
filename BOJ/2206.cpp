@@ -4,7 +4,7 @@ typedef pair<int, int> p;
 #define X first
 #define Y second
 
-int N, M, minLength = 10000000, board[1005][1005], depth[2][1005][1005] = {0}; // depth[Start/End][ROW][COL]
+int N, M, minLength = 10000000, board[1005][1005] = {0}, depth[2][1005][1005] = {0}; // depth[Start/End][ROW][COL]
 string in;
 queue<p> q, adjacencys;
 int maskX[] = {0, 1, 0, -1};
@@ -38,7 +38,6 @@ int main() {
                 int tX = q.front().X + maskX[i];
                 int tY = q.front().Y + maskY[i];
                 if (tX < 0 || tY < 0 || tX >= M || tY >= N) continue;  // OOB
-                if (tX == 0 && tY == 0 || tX == M-1 && tY == N-1) continue;
 
                 if (board[tY][tX] == 1) {  // If adjoin to wall
                     adjacency = true;

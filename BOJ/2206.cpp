@@ -7,10 +7,12 @@ typedef pair<int, int> p;
 int N, M, minLength = 10000000, board[1005][1005] = {0}, depth[2][1005][1005] = {0}; // depth[Start/End][ROW][COL]
 string in;
 queue<p> q, adjacencys;
+// Masks for horizontal/vertical direction search
 int maskX[] = {0, 1, 0, -1};
 int maskY[] = {1, 0, -1, 0};
+// Masks for diagonal search
 int maskDX[] = {1, 1, -1, -1};
-int maskDY[] = {1, -1, -1, 11};
+int maskDY[] = {1, -1, -1, 1};
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -55,7 +57,7 @@ int main() {
         }
     }
 
-    if (depth[0][N-1][M-1] != 0) minLength = depth[0][N-1][M-1] + 1;  // if normalPath exist
+    if (depth[0][N-1][M-1] != 0) minLength = depth[0][N-1][M-1];  // if normalPath exist
 
     adjacencys.emplace(0, 0);
     while (!adjacencys.empty()) {
@@ -77,14 +79,6 @@ int main() {
         }
         // diagonal search
         for (int i = 0; i < 4; i++) {
-//            // wall a
-//            int aX = adjacencys.front().X + maskX[i%4];
-//            int aY = adjacencys.front().Y + maskY[i%4];
-//            // wall b
-//            int bX = adjacencys.front().X + maskX[(i+1)%4];
-//            int bY = adjacencys.front().Y + maskY[(i+1)%4];
-//            if (board[aY][aX] + board[bY][bX] != 2) continue;  // two walls muse exist, if not, breaking wall does not shorten the length
-
             int tX = adjacencys.front().X + maskDX[i];
             int tY = adjacencys.front().Y + maskDY[i];
             if (tX < 0 || tY < 0 || tX >= M || tY >= N) continue;
@@ -95,13 +89,5 @@ int main() {
         }
         adjacencys.pop();
     }
-
-
-//    for (int n = 0; n < N; n++) {
-//        for (int m = 0; m < M; m++) {
-//            cout << depth[1][n][m];
-//        }
-//        cout << "\n";
-//    }
     cout << (minLength==10000000 ? -1 : minLength);
 }

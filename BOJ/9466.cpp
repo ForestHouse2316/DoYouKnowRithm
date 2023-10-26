@@ -44,7 +44,7 @@ int main() {
                 }
                 else {  // if circulation found
                     int endpoint = choose[currentStu];
-                    while (s.top() != endpoint) s.pop();
+                    while (s.top() != endpoint) s.pop();  // TODO 커스텀 스택 만들어서 endpoint가 어디에 위치하는지 쿼리한 후 remain을 빠르게 구하거나 자신의 인덱스를 저장하는 배열을 또 만들어 바로 구하도록 함
                     s.pop();
 
                     remained += s.size();

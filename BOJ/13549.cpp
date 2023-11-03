@@ -22,7 +22,7 @@ int main() {
         d.pop_front();
 
         // *2
-        if (f*2 < MAX && (dist[f*2] == -1 || dist[f*2] != -1 && dist[f*2] > dist[f])) {
+        if (f*2 < MAX && (dist[f*2] == -1 || dist[f*2] != -1 && dist[f*2] > dist[f])) {  // not visited, shorter than before
             dist[f*2] = dist[f];
             d.push_front(f*2);
         }

@@ -1,5 +1,3 @@
-// TODO 낮밤 바뀌며 제자리에 가만히 있는건 depth가 1 증가하면 되는 것이므로 pop 하고 다시 큐에 넣으면 되지 않을까? 한번 검토해보도록 하자.
-
 #include <bits/stdc++.h>
 using namespace std;
 typedef tuple<int, int, int> t;  // X Y wallBreaking

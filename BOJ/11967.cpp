@@ -1,30 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> p;
+typedef pair<short, short> p;
 #define X first
 #define Y second
 queue<p> q;
+queue<p> linking;
 int maskX[] = {0, 1, 0, -1};
 int maskY[] = {1, 0, -1, 0};
-int N, M, x, y, a, b, lights = 0, board[105][105] = {0}, accessible[105][105] = {false};  // 1-indexed
+int N, M, x, y, a, b, tX, tY, lights = 0;
+bool linkFound, unlinkFound;
+short board[105][105] = {0};  // 1-indexed
+// board value means:
+// 0 - light off
+// 1 - light on
+// 2 - non-accessible room
 vector<p> switches[105][105];  // switches[Y][X] pair<X, Y>
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     board[1][1] = 1;
-    accessible[1][1] = true;
+    lights++;
     cin >> N >> M;
     for (int m = 0; m < M; m++) {
         cin >> x >> y >> a >> b;
         switches[y][x].emplace_back(a, b);
     }
-    // TODO 해당 방에서 작동 가능한 스위치를 모조리 건드리고 불이 켜지면 board 의 값을 lighting 으로 바꾸든가 하여 표시
-    // TODO 항상 불이 루트 순서대로 켜질 것이라는 보장이 없다. 그러므로 방의 스위치를 켜면 주변으로 BFS를 수행하여 accessible한 곳과 만나는지 판단할것
-    // TODO 또한 그렇게 주변을 조사한 결과 accessible 하다면, 그 타일을 accessible 하다고 바꿀 것
 
-    // TODO 그리고 불 켜진 방에서 BFS 할 때, 출발지가 accessible 하다면 BFS로 탐색한 곳을 다시 accessible 하다고 업데이트 해줄것.
-    // TODO 처음에 non-accessible 했는데 다시 accessible 하게 됐을 경우 또한 있기 때문임.
+    q.emplace(1, 1);
+    while(!q.empty()) {
+        for (p dest : switches[q.front().Y][q.front().X]) {  // turn on the switches respectively
+            if (board[dest.Y][dest.X] != 0) continue;
 
-    // TODO accessible 을 true 로 설정하면서 동시에 lights++ 해주기
+            // turn on the switch & count light
+            board[dest.Y][dest.X] = 2;
+            lights++;
+
+            // check accessibility
+            linkFound = false, unlinkFound = false;
+            for (int i = 0; i < 4; i++) {
+                tX = dest.X + maskX[i];
+                tY = dest.Y + maskY[i];
+                if (tX <= 0 || tY <= 0 || tX > N || tY > N || board[tY][tX] == 0) continue;
+                linkFound = linkFound || board[tY][tX] == 1;
+                unlinkFound = unlinkFound || board[tY][tX] == 2;
+            }
+
+            if (!linkFound) continue;  // if there's no link
+            board[dest.Y][dest.X] = 1;
+            q.push(dest);
+
+            if (!unlinkFound) continue;  // if there's no unlinked room
+
+            linking.emplace(dest.X, dest.Y);
+            while(!linking.empty()) {
+                for (int i = 0; i < 4; i++) {
+                    tX = linking.front().X + maskX[i];
+                    tY = linking.front().Y + maskY[i];
+                    if (tX <= 0 || tY <= 0 || tX > N || tY > N || board[tY][tX] != 2) continue;
+
+                    board[tY][tX] = 1;
+                    q.emplace(tX, tY);
+                    linking.emplace(tX, tY);
+                }
+                linking.pop();
+            }
+        }
+        q.pop();
+    }
+    cout << lights;
 }

@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int, int> p;
-#define X first
-#define Y second
 int R, C, cX, cY, tX, tY, loop, day = 0, L = 0;
 bool vis[2][1502][1502] = {false};  // visited[swan number][Y][X]
 int board[1502][1502];
@@ -24,7 +22,7 @@ int main() {
                 vis[L][r][c] = true;
                 L++;
             }
-            else board[r][c] = in[c] == 'X' ? -1 : 7;
+            else board[r][c] = (in[c] == 'X') ? -1 : 7;
         }
     }
 

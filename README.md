@@ -20,8 +20,8 @@ I'll leave a comment for variables or methods, from now.
 using namespace std;
 
 typedef long long ll;
-#define first first
-#define second second
+#define a first
+#define b second
 typedef pair<int, int> p;
 
 int main() {

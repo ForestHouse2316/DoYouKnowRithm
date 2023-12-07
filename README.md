@@ -20,25 +20,25 @@ I'll leave a comment for variables or methods, from now.
 using namespace std;
 
 typedef long long ll;
+#define a first
+#define b second
 typedef pair<int, int> p;
-#define first first
-#define second second
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    // Use \n instead of endl
+    
 }
 ```
 #### BFS  & 2D Diffusion Mask
 Rotation : CW
 ``` cpp
 queue<p> q;
-int maskX[] = {0, 1, 0, -1};
-int maskY[] = {1, 0, -1, 0};
+int dx[] = {0, 1, 0, -1};
+int dy[] = {1, 0, -1, 0};
 // Diagonal
-int maskX[] = {0, 1, 1, 1, 0, -1, -1, -1};
-int maskY[] = {1, 1, 0, -1, -1, -1, 0, 1};
+int dx[] = {0, 1, 1, 1, 0, -1, -1, -1};
+int dy[] = {1, 1, 0, -1, -1, -1, 0, 1};
 ```
 
 #### Plane Visulaizer

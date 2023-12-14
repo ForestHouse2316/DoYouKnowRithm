@@ -1,41 +1,38 @@
 #include <bits/stdc++.h>
-#define MAX 100003
 using namespace std;
 
-int T, F, idCnt, ra, rb, parent[MAX*2], num[MAX];
+int T, F, ra, rb, idCnt, num[200002], parent[200002];
 string a, b;
 unordered_map<string, int> id;
 
 int root(int child) {
     if (child == parent[child]) return child;
-    return root(parent[child]);
+    return parent[child] = root(parent[child]);
 }
 
-int assignId(string& name) {
-    if (id.find(name) != id.end()) return id[name];
-    id[name] = idCnt;
-    return idCnt++;
+int getId(string name) {
+    if (id.count(name) == 1) return id[name];
+    return id[name] = idCnt++;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    F = MAX-2;
+
     cin >> T;
     while (T--) {
-        for (int i = 0; i < F*2+1; ++i) {
+        for (int i = 0; i < 200002; ++i) {
             parent[i] = i;
         }
-        fill(num, num+F+1, 1);
+        fill(num, num+200002, 1);
         id.clear();
         idCnt = 0;
 
         cin >> F;
-        for(int f = 0; f < F; ++f) {
+        while(F--) {
             cin >> a >> b;
-            assignId(a); assignId(b);
-            ra = root(id[a]);
-            rb = root(id[b]);
+            ra = root(getId(a));
+            rb = root(getId(b));
             if (ra != rb) {
                 num[rb] += num[ra];
                 parent[ra] = rb;

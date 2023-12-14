@@ -1,46 +1,64 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define x(a) get<0>(a)
-#define y(a) get<1>(a)
-#define h(a) get<2>(a)
-#define l(a) get<3>(a)
 #define f q.front()
-#define lf lq.front()
-#define fi first
-#define se second
-typedef tuple<int, int, int, int> ti;
-int N, s, e, m, tx, ty, th, tl, board[102][102], mi = INT_MAX, mx = 0, minGap, cycle;
+#define x first
+#define y second
+typedef pair<int, int> p;
+int N, b, t, m, tx, ty, result, tl, bl, gap, board[102][102], mi = INT_MAX, mx = 0;
 int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
-bool vis[102][102];
+bool vis[102][102];  // TODO int 로 변환작업 필요
 
-// 최대값과 최소값을 고정해보자! 그것도 bin search로
 bool bfs(int top, int bottom) {
+    if (board[0][0] > top || board[0][0] < bottom) return false;
+    if (board[N-1][N-1] > top || board[N-1][N-1] < bottom) return false;
+
     for (int i = 0; i < 102; ++i) {
-        fill(vis[i], vis[i] + 102, INT_MAX);
+        fill(vis[i], vis[i] + 102, false);
     }
-    queue<ti> q;
-    q.emplace(0, 0, board[0][0], board[0][0]);
-    // TODO set visit on starting point as true
+    queue<p> q;
+    q.emplace(0, 0);
+    vis[0][0] = true;
     while (!q.empty()) {
-        cycle++;
         for (int i = 0; i < 4; ++i) {
-            tx = x(f) + dx[i];
-            ty = y(f) + dy[i];
-            if (tx < 0 || ty < 0 || tx >= N || ty >= N) continue;
-            if (vis[ty][tx]) continue;
-//            th = max(h(f), board[ty][tx]);
-//            tl = min(l(f), board[ty][tx]);
-//            if (vis[ty][tx] <= th - tl) continue;
-//            vis[ty][tx] = th-tl;
-//            if (th-tl > limit) continue;
+            tx = f.x + dx[i];
+            ty = f.y + dy[i];
+            if (tx < 0 || ty < 0 || tx >= N || ty >= N || vis[ty][tx]) continue;
             vis[ty][tx] = true;
-//            cout << "On " << tx << "-" << ty << " : diff = " << th-tl << endl;
+            if (board[ty][tx] > top || board[ty][tx] < bottom) continue;
             if (tx == N-1 && ty == N-1) return true;
-            q.emplace(tx, ty, th, tl);
+            q.emplace(tx, ty);
         }
         q.pop();
     }
     return false;
+}
+
+int fixedTop(int top) {  // returns tightened bottom
+    b = mi; t = top;
+    result = b;
+    while (b <= t) {
+        m = (b + t) / 2;
+        if (bfs(top, m)) {
+            result = m;
+            b = m + 1;
+        }
+        else t = m - 1;
+    }
+    return result;
+}
+
+int fixedBottom(int bottom) {  // returns tightened top
+    b = bottom; t = mx;
+    result = t;
+    while (b <= t) {
+        m = (b + t) / 2;
+        if (bfs(m, bottom)) {
+            result = m;
+            t = m - 1;
+        }
+        else b = m + 1;
+    }
+    return result;
 }
 
 int main() {
@@ -54,30 +72,15 @@ int main() {
             mi = min(mi, board[row][col]);
         }
     }
-//    s = abs(board[0][0] - board[N-1][N-1]);
-//    e = mx;
-//    while (s <= e) {
-//        m = (s+e)/2;
-//        cout << "trying : " << m << endl;
-//        if (bfs(m)) {
-//            minGap = m;
-//            e = m-1;
-//        }
-//        else s = m+1;
-//    }
 
+    bl = fixedTop(mx);
+    tl = fixedBottom(bl);
+    gap = tl - bl;
+//    cout << "> " << tl << "-" << bl << " = " << tl-bl << endl;
+    tl = fixedBottom(mi);
+    bl = fixedTop(tl);
+    gap = min(gap, tl - bl);
+//    cout << "> " << tl << "-" << bl << " = " << tl-bl << endl;
 
-
-    cout << minGap;
+    cout << gap;
 }
-
-
-/*
-5
-5 6 6 6 9
-4 9 9 6 9
-4 4 4 6 9
-9 9 4 5 9
-9 9 9 7 5
-
-*/

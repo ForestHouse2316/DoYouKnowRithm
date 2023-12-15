@@ -4,9 +4,9 @@ using namespace std;
 #define x first
 #define y second
 typedef pair<int, int> p;
-int N, b, t, m, tx, ty, result, tl, bl, gap, board[102][102], mi = INT_MAX, mx = 0;
+int N, b, t, m, tx, ty, result, gap, board[102][102], s, e, hc, minGap = INT_MAX, mi = INT_MAX, mx = 0;
 int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
-bool vis[102][102];  // TODO int 로 변환작업 필요
+bool vis[102][102];
 
 bool bfs(int top, int bottom) {
     if (board[0][0] > top || board[0][0] < bottom) return false;
@@ -33,23 +33,9 @@ bool bfs(int top, int bottom) {
     return false;
 }
 
-int fixedTop(int top) {  // returns tightened bottom
-    b = mi; t = top;
-    result = b;
-    while (b <= t) {
-        m = (b + t) / 2;
-        if (bfs(top, m)) {
-            result = m;
-            b = m + 1;
-        }
-        else t = m - 1;
-    }
-    return result;
-}
-
 int fixedBottom(int bottom) {  // returns tightened top
     b = bottom; t = mx;
-    result = t;
+    result = -1;
     while (b <= t) {
         m = (b + t) / 2;
         if (bfs(m, bottom)) {
@@ -73,14 +59,13 @@ int main() {
         }
     }
 
-    bl = fixedTop(mx);
-    tl = fixedBottom(bl);
-    gap = tl - bl;
-//    cout << "> " << tl << "-" << bl << " = " << tl-bl << endl;
-    tl = fixedBottom(mi);
-    bl = fixedTop(tl);
-    gap = min(gap, tl - bl);
-//    cout << "> " << tl << "-" << bl << " = " << tl-bl << endl;
+    minGap = mx-mi;
+    for (int lc = mi; lc <= mx; ++lc) {
+        hc = fixedBottom(lc);
+        if (hc == -1) break;
+        gap = hc - lc;
+        if (gap < minGap) minGap = gap;
+    }
 
-    cout << gap;
+    cout << minGap;
 }

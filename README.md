@@ -33,7 +33,7 @@ int main() {
 #### BFS  & 2D Diffusion Mask
 Rotation : CW
 ``` cpp
-queue<p> q;
+queue<pii> q;
 int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
 // Diagonal
 int dx[] = {0, 1, 1, 1, 0, -1, -1, -1}, dy[] = {1, 1, 0, -1, -1, -1, 0, 1};

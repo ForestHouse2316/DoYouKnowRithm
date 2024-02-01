@@ -1,25 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int, int> pii;
-int N, K, x, y, cx, cy, tx, ty, year = 0, loop, loopK, targetParent;
+int N, K, x, y, cx, cy, tx, ty, year = 0, loop, loopK, targetParent, compParent;
 int civID = 0;
 int board[2005][2005], parent[100005];
-bool merged, registered[2005][2005] = {false};
+bool registered[2005][2005] = {false};
 vector<int> adjCiv(4);
 queue<pii> q;
 int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
 
-void v() {
-    for (int a = 1; a <= 10; a++) {
-        for (int b = 1; b <= 10; b++) {
-            cout << (board[a][b] == -1 ? "." : to_string(board[a][b])) << "\t";
-        }
-        cout << endl;
-    }
-    cout << "YEAR : " << year << endl;
-    cout << K << endl;
-    cout << "\n\n\n";
-}
 
 int getParent(int id) {
     if (parent[id] == -1 || parent[id] == id) return id;
@@ -45,8 +34,6 @@ int main() {
     }
 
     while (true) {
-        v();
-
         loop = q.size();
         while (loop--) {
             adjCiv.clear();
@@ -68,27 +55,41 @@ int main() {
             }
 
             // set civID to board
-            if (adjCiv.empty()) board[cy][cx] = civID++;
+            if (adjCiv.empty()) board[cy][cx] = civID++;  // when year == 0
             else {
-                board[cy][cx] = adjCiv[0];  // No error should be occurred, because there's at least one path exist except when year is 0
+                if (year == 0) K--;
+                board[cy][cx] = adjCiv[0];  // Any exceptions should not be occurred, because there's at least one path exist except when year is 0
                 targetParent = getParent(adjCiv[0]);
-                merged = false;
                 for (int i = 1; i < adjCiv.size(); ++i) {
-                    if (targetParent != getParent(adjCiv[i])) {
+                    compParent = getParent(adjCiv[i]);
+                    if (targetParent != compParent) {
                         // Merge two civs
-                        parent[adjCiv[i]] = targetParent;
+                        parent[compParent] = targetParent;
                         K--;
-                        merged = true;
                     }
                 }
                 if (K == 1) {
-                    v();
                     cout << year;
                     return 0;
                 }
-                else if (!merged) ;
             }
         }
         year++;
     }
 }
+
+/*
+
+void v() {  // A test method :)
+    for (int a = 1; a <= 10; a++) {
+        for (int b = 1; b <= 10; b++) {
+            cout << (board[a][b] == -1 ? "." : to_string(board[a][b])) << "\t";
+        }
+        cout << endl;
+    }
+    cout << "YEAR : " << year << endl;
+    cout << K << endl;
+    cout << "\n\n\n";
+}
+
+*/

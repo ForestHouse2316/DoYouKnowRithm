@@ -3,38 +3,47 @@ using namespace std;
 typedef pair<int, int> pii;
 #define x first
 #define y second
-int dx[] = {false, 0, 0, 1, 1}, dy[] = {false, 0, 1, 1, 0};  // 1-indexed
-
-// Q number is:
-// 2 3
-// 1 4
-
-// Quarter 1,2,3 : start from left bottom
-// Quarter 4 : start from right top
-// 47
-
+#define T 0
+#define R 1
+#define B 2
+#define L 3
+#define CW 0
+#define CCW 1
+pii walk[][4] = {{{0,0}, {0,1}, {1,1}, {1,0}},
+                 {{0,0}, {1,0}, {1,1}, {0,1}},
+                 {{0,0}, {0,-1}, {-1,-1}, {-1,0}},
+                 {{0,0}, {-1,0}, {-1,-1}, {0,-1}}};
+int rotateH[][4] = {{1, 0, 0, 3},
+                    {3, 0, 0, 1}};
 int N, M;
+int n, H = T, sX = 1, sY = 1, sM = 1;  // using global vars to reduce memory utilization
 
+pii rec() {
+    if (n == 1) return {sX, sY};
+    n /= 2;
+    int qAmount = (int) pow(n, 2);
+    int quarter = (M-sM) / qAmount;
 
-// TODO All-renewal... They're all wrong! Parameter "reverse" should be separated into revX and revY
-pii rec(int sx, int sy, int len, int offset, int reverse) {
-    int quarter = (M-offset / (pow(len, 2)/4)) + 1;
-    int half = len/2;
-    if (len == 2) {
-        return {sx+dx[quarter]*half, sy+dy[quarter]*half};
+    // update parameter
+    // BE CAREFUL about the order of the code lines
+    sM += quarter * qAmount;
+    sX += walk[H][quarter].x * n;
+    sY += walk[H][quarter].y * n;
+    if (quarter == 3) {  // move sX and sY to opposite site in this quarter, which is next to 2-quarter's end point
+        sX += walk[H][2].x * (n-1);
+        sY += walk[H][2].y * (n-1);
     }
-    if (quarter == 4) {
-        return rec(sx+reverse*dx[quarter]*half, sy+reverse*dy[quarter]*half, half, offset + (pow(half, 2) * (quarter-1)), )
-    }
-    else {
-        return rec(sx+dx[quarter]*half, sy+dy[quarter]*half, half, offset + (pow(half, 2) * (quarter-1)), reverse);
-    }
+    H = (H + rotateH[(H%2) ? CCW : CW][quarter]) % 4;
+    return rec();
 }
+
+
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cin >> N >> M;
-    pii result = rec(M, 1, 1, N, 0);
+    n = N;  // just because we want to regard N as a constant
+    pii result = rec();
     cout << result.x << " " << result.y;
 }

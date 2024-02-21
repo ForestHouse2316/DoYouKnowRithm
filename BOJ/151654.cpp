@@ -11,7 +11,7 @@ void rec(int depth) {
         cout << '\n';
         return;
     }
-    for (int i = 0; i < N && !lockN[i]; ++i) {
+    for (int i = 0; i < N; ++i) {
         if (lockN[i]) continue;
         comb[depth] = n[i];
         lockN[i] = true;

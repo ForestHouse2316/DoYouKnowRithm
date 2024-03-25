@@ -7,7 +7,7 @@
 using namespace std;
 typedef pair<int, int> pii;
 
-int N, pkMax = 0, pkMin = MAX_ALT, gMax = 0, gMin = MAX_ALT, numK = 0, in, fatigue = MAX_ALT, numVisK, tx, ty, sB, eB, sT, eT, limB, limT;
+int N, pkMax = 0, pkMin = MAX_ALT, gMax = 0, gMin = MAX_ALT, numK = 0, in, fatigue, numVisK, tx, ty, limB, limT, lastLim, tightResultB;
 int board[53][53] = {0}, alt[53][53];
 char inC;
 bool vis[53][53], success;
@@ -36,12 +36,26 @@ bool bfs() {
         }
         q.pop();
     }
-    return numK == numVisK;
+    return numVisK == numK;
+}
+
+int tight(int s, int e, bool upward) {
+    lastLim = -1;
+    int& lim = upward ? limB : limT;
+
+    while (s <= e) {
+        lim = (s+e)/2;
+        success = bfs();
+        if (success) lastLim = lim;
+        if (success == upward) s = lim+1;
+        else e = lim-1;
+    }
+
+    return lastLim;
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     cin >> N;
     for (int y = 0; y < N; ++y) {
         for (int x = 0; x < N; ++x) {
@@ -67,34 +81,19 @@ int main() {
         }
     }
 
-    // TODO
-    // limT와 limB의 BS 는 실패했다.
-    // 그렇다면 limB와 range 에 대해 BS를 한다면?
-    // range를 밖에 두고 limB에 대해 BS를 해가며 한 케이스라도 성공하면 바로 range 쪼임
-    // 그리고 limB는 항상 gMin~pkMin 범위에 대해서 BS 할것
-    sB = gMin;
-    eB = pkMin;
-    while (sB <= eB) {
-        success = false;
-        limB = (sB+eB)/2;
+    fatigue = gMax - gMin;
+    limB = gMin;
+    limT = pkMax;
+    while (limB <= pkMin) {
+        limT = tight(pkMax, gMax, false);
+        if (limT == -1) break;
 
-        sT = pkMax;
-        eT = fatigue == MAX_ALT ? gMax : sT + fatigue;
-        while (sT <= eT) {
-            limT = (sT+eT)/2;
-
-            if (bfs()) {
-                eT = limT - 1;
-                if (limT - limB < fatigue) {
-                    success = true;
-                    fatigue = limT - limB;
-                }
-            }
-            else sT = limT + 1;
+        tightResultB = tight(limT - fatigue, pkMin, true);
+        if (tightResultB != -1) {
+            fatigue = limT - tightResultB;
+            limB = tightResultB + 1;
         }
-
-        if (success) sB = limB + 1;
-        else eB = limB - 1;
+        else limB = limT - fatigue + 1;
     }
 
     cout << fatigue;

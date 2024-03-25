@@ -85,15 +85,16 @@ int main() {
     limB = gMin;
     limT = pkMax;
     while (limB <= pkMin) {
-        limT = tight(pkMax, gMax, false);
+        limT = tight(pkMax, gMax, false); // tight top
         if (limT == -1) break;
 
-        tightResultB = tight(limT - fatigue, pkMin, true);
+        tightResultB = tight(limT - fatigue, pkMin, true); // tight bottom, starts with current minimum altitude range ( = limT - fatigue)
         if (tightResultB != -1) {
+            // new minimum fatigue
             fatigue = limT - tightResultB;
             limB = tightResultB + 1;
         }
-        else limB = limT - fatigue + 1;
+        else limB = limT - fatigue + 1; // not a new minimum fatigue
     }
 
     cout << fatigue;

@@ -1,4 +1,4 @@
-# DoYouKnowRythm
+# DoYouKnowRithm
 A personal algorithm study backup repository
 
 ## Why public?
